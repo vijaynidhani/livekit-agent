@@ -7,3 +7,9 @@ docker run --rm \
 
 uv run python livekit_basic_agent.py dev
 
+lk config set \
+    --url ws://localhost:7880 \
+    --api-key devkey \
+    --api-secret secret
+
+Run agent-starter-react frontend for running the frontned
