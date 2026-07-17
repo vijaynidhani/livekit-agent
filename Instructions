@@ -1,9 +1,9 @@
-docker run --rm \
+docker run -d  \
     -p 7880:7880 \
     -p 7881:7881 \
     -e LIVEKIT_KEYS="devkey: secret" \
     livekit/livekit-server \
-    --dev
+    livekit-server --dev
 
 uv run python livekit_basic_agent.py dev
 
@@ -13,3 +13,26 @@ lk config set \
     --api-secret secret
 
 Run agent-starter-react frontend for running the frontned
+
+// https://docs.livekit.io/transport/self-hosting/egress/
+
+Check the host ip
+docker run -it --rm alpine nslookup host.docker.internal
+should return 192.168.65.x
+
+
+docker run -d \
+  --cap-add SYS_ADMIN \
+  -e EGRESS_CONFIG_FILE=/out/egress_config.yaml \
+  -v "$(pwd)/egress:/out" \
+  livekit/egress
+
+// Run redis server
+docker run -d \
+  --name redis-server \
+  -p 6379:6379 \
+  -v "$(pwd)/redis:/data" \
+  -v "$(pwd)/redis.conf:/usr/local/etc/redis/redis.conf:ro" \
+  --restart always \
+  redis:latest \
+  redis-server /usr/local/etc/redis/redis.conf 
