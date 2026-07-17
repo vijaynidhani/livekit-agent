@@ -1,16 +1,20 @@
-docker run -d  \
-    -p 7880:7880 \
-    -p 7881:7881 \
-    -e LIVEKIT_KEYS="devkey: secret" \
-    livekit/livekit-server \
-    livekit-server --dev
+docker run -d \
+  --name livekit-server \
+  -p 7880:7880 \
+  -p 7881:7881 \
+  -p 7882:7882/udp \
+  -e LIVEKIT_KEYS="devkey: secret" \
+  -e LIVEKIT_REDIS_ADDRESS="host.docker.internal:6379" \
+  livekit/livekit-server \
+  livekit-server --dev
+
 
 uv run python livekit_basic_agent.py dev
 
-lk config set \
-    --url ws://localhost:7880 \
-    --api-key devkey \
-    --api-secret secret
+lk room list \
+  --url ws://localhost:7880 \
+  --api-key devkey \
+  --api-secret secret
 
 Run agent-starter-react frontend for running the frontned
 
@@ -19,7 +23,6 @@ Run agent-starter-react frontend for running the frontned
 Check the host ip
 docker run -it --rm alpine nslookup host.docker.internal
 should return 192.168.65.x
-
 
 docker run -d \
   --cap-add SYS_ADMIN \
