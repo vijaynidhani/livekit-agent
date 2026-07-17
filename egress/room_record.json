@@ -1,0 +1,9 @@
+{
+  "room_name": "voice_assistant_room_3186",
+  "layout": "speaker",
+  "file_outputs": [
+    {
+      "filepath": "/out/my-room.mp4"
+    }
+  ]
+}

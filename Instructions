@@ -8,6 +8,7 @@ docker run -d \
   livekit/livekit-server \
   livekit-server --dev
 
+=========================================================
 
 uv run python livekit_basic_agent.py dev
 
@@ -28,6 +29,7 @@ docker run -d \
   --cap-add SYS_ADMIN \
   -e EGRESS_CONFIG_FILE=/out/egress_config.yaml \
   -v "$(pwd)/egress:/out" \
+  -v "$(pwd)/egress:/tmp" \
   livekit/egress
 
 // Run redis server
@@ -39,3 +41,24 @@ docker run -d \
   --restart always \
   redis:latest \
   redis-server /usr/local/etc/redis/redis.conf 
+
+Start the UI
+agent-starter-react % pnpm dev 
+
+=====================================
+
+lk \
+  --url ws://localhost:7880 \  
+  --api-key devkey \
+  --api-secret secret \
+  egress start --type room-composite room_record.json
+
+  EgressID: EG_7zg96TEvKcaj Status: EGRESS_STARTING
+
+  lk \
+  --url http://localhost:7880 \
+  --api-key devkey \
+  --api-secret secret \
+  egress stop EG_7zg96TEvKcaj    
+
+=======================================
