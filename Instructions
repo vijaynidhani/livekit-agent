@@ -8,7 +8,7 @@ docker run -d \
   livekit/livekit-server \
   livekit-server --dev
 
-=========================================================
+===========================================
 
 uv run python livekit_basic_agent.py dev
 
@@ -24,14 +24,14 @@ Run agent-starter-react frontend for running the frontned
 Check the host ip
 docker run -it --rm alpine nslookup host.docker.internal
 should return 192.168.65.x
-
+==========================================
 docker run -d \
   --cap-add SYS_ADMIN \
   -e EGRESS_CONFIG_FILE=/out/egress_config.yaml \
   -v "$(pwd)/egress:/out" \
   -v "$(pwd)/egress:/tmp" \
   livekit/egress
-
+=========================================
 // Run redis server
 docker run -d \
   --name redis-server \
@@ -45,7 +45,7 @@ docker run -d \
 Start the UI
 agent-starter-react % pnpm dev 
 
-=====================================
+=========================================
 
 lk \
   --url ws://localhost:7880 \  
