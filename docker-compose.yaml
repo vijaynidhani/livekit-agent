@@ -1,0 +1,56 @@
+services:
+  redis:
+    image: redis:7-alpine
+    command: ["redis-server", "/etc/redis/redis.conf"]
+    ports:
+      - "6379:6379"
+    volumes:
+      - ./redis/redis.conf:/etc/redis/redis.conf:ro
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  livekit-server:
+    image: livekit/livekit-server:latest
+    command: ["--dev", "--bind", "0.0.0.0"]
+    environment:
+      LIVEKIT_KEYS: "devkey: secret"
+    ports:
+      - "7880:7880"
+      - "7881:7881"
+      - "7882:7882"
+      - "30000-30010:30000-30010/udp"
+    depends_on:
+      redis:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:7880/ || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+
+  egress:
+    image: livekit/egress:latest
+    command: ["--config", "/etc/egress.yaml"]
+    cap_add:
+      - SYS_ADMIN
+    ports:
+      - "7980:7980"
+    volumes:
+      - ./egress/egress_config.yaml:/etc/egress.yaml:ro
+    environment:
+      EGRESS_CONFIG_FILE: /etc/egress.yaml
+      LIVEKIT_WS_URL: ws://livekit-server:7880
+      LIVEKIT_API_KEY: devkey
+      LIVEKIT_API_SECRET: secret
+    depends_on:
+      livekit-server:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+
+volumes:
+  redis-data:
