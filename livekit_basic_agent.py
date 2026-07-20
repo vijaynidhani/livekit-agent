@@ -182,7 +182,7 @@ async def entrypoint(ctx: agents.JobContext):
         stt=deepgram.STT(model="nova-2"),
         llm=openai.LLM(
             model="mlx-community/qwen3.5-0.8b-mlx",
-            base_url="http://127.0.0.1:1234/v1",
+            base_url="http://192.168.100.31:1234/v1",
         ),
         tts=deepgram.TTS(model="aura-2-thalia-en"),
         vad=silero.VAD.load(),
