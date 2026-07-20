@@ -27,6 +27,7 @@ should return 192.168.65.x
 ==========================================
 docker run -d \
   --cap-add SYS_ADMIN \
+  --name egress-server
   -e EGRESS_CONFIG_FILE=/out/egress_config.yaml \
   -v "$(pwd)/egress:/out" \
   -v "$(pwd)/egress:/tmp" \
@@ -62,3 +63,10 @@ lk \
   egress stop EG_7zg96TEvKcaj    
 
 =======================================
+
+
+lk \
+  --url http://localhost:7880 \
+  --api-key devkey \
+  --api-secret secret \
+agent console
