@@ -7,6 +7,8 @@ services:
     volumes:
       - ./redis/redis.conf:/etc/redis/redis.conf:ro
       - redis-data:/data
+    networks:
+      - livekit-network
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 5s
@@ -26,6 +28,8 @@ services:
     depends_on:
       redis:
         condition: service_healthy
+    networks:
+      - livekit-network
     healthcheck:
       test: ["CMD-SHELL", "wget -qO- http://127.0.0.1:7880/ || exit 1"]
       interval: 10s
@@ -51,6 +55,12 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    networks:
+      - livekit-network
+
+networks:
+  livekit-network:
+    driver: bridge
 
 volumes:
   redis-data:

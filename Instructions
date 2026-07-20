@@ -33,6 +33,8 @@ docker run -d \
   -e EGRESS_CONFIG_FILE=/out/egress_config.yaml \
   -v "$(pwd)/egress:/out" \
   -v "$(pwd)/egress:/tmp" \
+
+  
   livekit/egress
 =========================================
 // Run redis server
