@@ -11,7 +11,8 @@ docker run -d \
 
 ===========================================
 
-uv run python livekit_basic_agent.py dev
+
+
 
 lk room list \
   --url ws://localhost:7880 \
@@ -34,7 +35,7 @@ docker run -d \
   -v "$(pwd)/egress:/out" \
   -v "$(pwd)/egress:/tmp" \
 
-  
+
   livekit/egress
 =========================================
 // Run redis server
