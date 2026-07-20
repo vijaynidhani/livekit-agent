@@ -28,7 +28,7 @@ should return 192.168.65.x
 ==========================================
 docker run -d \
   --cap-add SYS_ADMIN \
-  --name egress-server
+  --name egress-server \
   --add-host=host.docker.internal:host-gateway \
   -e EGRESS_CONFIG_FILE=/out/egress_config.yaml \
   -v "$(pwd)/egress:/out" \
