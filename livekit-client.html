@@ -1,0 +1,45 @@
+  <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Local LiveKit Audio Test</title>
+        <script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
+    </head>
+    <body>
+        <h1>Listening to Local Server</h1>
+        <div id="status">Connecting to ws://localhost:7880...</div>
+        <div id="audio-status">Waiting for audio...</div>
+        
+        <script>
+            const room = new LiveKit.Room();
+            const status = document.getElementById('status');
+            const audioStatus = document.getElementById('audio-status');
+            
+            room.on('connected', () => {
+                status.textContent = 'Connected to room: ${room.name}';
+            });
+            
+            room.on('trackSubscribed', (track, publication, participant) => {
+                if (track.kind === 'audio') {
+                    audioStatus.textContent = '🔊 Receiving audio - should be hearing sound now!';
+                    const audioElement = new Audio();
+                    audioElement.srcObject = new MediaStream([track]);
+                    audioElement.play().then(() => {
+                        audioStatus.textContent = '🔊 Audio is playing through your speakers!';
+                    }).catch(err => {
+                        audioStatus.textContent = '❌ Audio play error: ${err.message}';
+                    });
+                }
+            });
+            
+            // Connect to YOUR local server (not meet.livekit.io)
+            // For dev server, we can connect without token
+            room.connect('ws://localhost:7880', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkZXZrZXkiLCJzdWIiOiJsaXN0ZW5lciIsImV4cCI6MTc4NDc0Mzg1OCwibmJmIjoxNzg0NjU3NDU4LCJpYXQiOjE3ODQ2NTc0NTgsImlkZW50aXR5IjoibGlzdGVuZXIiLCJuYW1lIjoibGlzdGVuZXIiLCJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6ImFpcmJuYiJ9fQ.B2k9_twK7Ws6BFtAy07xvkNIQ5iwFkWeboKe3F_X6Og', {
+                name: 'web-listener',
+                autoSubscribe: true
+            }).catch(err => {
+                status.textContent = 'Connection failed: ${err.message}';
+                console.error('Connection error:', err);
+            });
+        </script>
+    </body>
+    </html>

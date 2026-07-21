@@ -1,3 +1,6 @@
+
+uv run python livekit_basic_agent.py dev
+
 docker run -d \
   --name livekit-server \
   -p 7880:7880 \
@@ -75,3 +78,11 @@ lk \
   --api-key devkey \
   --api-secret secret \
 agent console
+
+Token creation ------
+lk token create --identity listener --room airbnb --api-key devkey --api-secret secret --join --token-only --valid-for 24h
+
+Join a room  -------
+lk room join airbnb --url http://sammy:7880 --dev --identity hello-speaker --publish hello.ogg
+
+Use token to connect to server

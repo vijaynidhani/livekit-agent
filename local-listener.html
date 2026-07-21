@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Local LiveKit Audio Test</title>
+    <script src="https://cdn.jsdelivr.net/npm/livekit-client/dist/livekit-client.umd.min.js"></script>
+</head>
+<body>
+    <h1>Listening to Local Server</h1>
+    <div id="status">Connecting to ws://localhost:7880...</div>
+    <div id="audio-status">Waiting for audio...</div>
+    
+    <script>
+        // Check if LiveKit client is loaded
+        if (typeof LivekitClient === 'undefined') {
+            document.getElementById('status').textContent = 'ERROR: LiveKit SDK not loaded';
+        } else {
+            const room = new LivekitClient.Room();
+            const status = document.getElementById('status');
+            const audioStatus = document.getElementById('audio-status');
+            
+            room.on('connected', () => {
+                status.textContent = `Connected to room: ${room.name}`;
+            });
+            
+            room.on('disconnected', (reason) => {
+                status.textContent = `Disconnected: ${reason}`;
+                audioStatus.textContent = 'Disconnected';
+            });
+            
+            room.on('connectionError', (error) => {
+                status.textContent = `Connection error: ${error.message}`;
+                audioStatus.textContent = 'Connection failed';
+            });
+            
+            room.on('trackSubscribed', (track, publication, participant) => {
+                if (track.kind === 'audio') {
+                    audioStatus.textContent = '🔊 Receiving audio - should be hearing sound now!';
+                    const audioElement = new Audio();
+                    audioElement.srcObject = new MediaStream([track]);
+                    audioElement.play().then(() => {
+                        audioStatus.textContent = '🔊 Audio is playing through your speakers!';
+                    }).catch(err => {
+                        audioStatus.textContent = `❌ Audio play error: ${err.message}`;
+                        console.error('Audio play error:', err);
+                    });
+                }
+            });
+            
+            room.on('trackUnsubscribed', (track, publication, participant) => {
+                if (track.kind === 'audio') {
+                    audioStatus.textContent = 'Audio stream ended';
+                }
+            });
+            
+            // Connect to YOUR local server using WebSocket URL and a valid token
+            room.connect('ws://localhost:7880', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJkZXZrZXkiLCJzdWIiOiJsaXN0ZW5lciIsImV4cCI6MTc4NDY1NzAyOCwibmJmIjoxNzg0NjU2NzI4LCJpYXQiOjE3ODQ2NTY3MjgsImlkZW50aXR5IjoibGlzdGVuZXIiLCJuYW1lIjoibGlzdGVuZXIiLCJ2aWRlbyI6eyJyb29tSm9pbiI6dHJ1ZSwicm9vbSI6ImFpcmJuYiJ9fQ.aK9sUJ6jJQKbWgwHuq44w7XHf_KmlOEy-s6YonVfASk', {
+                name: 'web-listener',
+                autoSubscribe: true
+            }).then(() => {
+                status.textContent = 'Connected successfully';
+            }).catch(err => {
+                status.textContent = `Connection failed: ${err.message}`;
+                console.error('Connection error:', err);
+            });
+        }
+    </script>
+</body>
+</html>
