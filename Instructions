@@ -14,9 +14,6 @@ docker run -d \
 
 ===========================================
 
-
-
-
 lk room list \
   --url ws://localhost:7880 \
   --api-key devkey \
@@ -86,3 +83,23 @@ Join a room  -------
 lk room join airbnb --url http://sammy:7880 --dev --identity hello-speaker --publish hello.ogg
 
 Use token to connect to server
+
+
+docker run -d \
+  --name livekit-sip \
+  --restart unless-stopped \
+  --network host \
+  -e SIP_CONFIG_BODY="$(cat <<'EOF'
+api_key: 'devkey'
+api_secret: 'secret'
+ws_url: 'ws://192.168.167.117:7880'
+redis:
+  address: '192.168.167.117:6379'
+sip_port: 5060
+rtp_port: 10000-20000
+use_external_ip: true
+logging:
+  level: debug
+EOF
+)" \
+  livekit/sip:latest
