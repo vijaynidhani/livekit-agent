@@ -9,4 +9,4 @@ RUN apt-get update && \
     apt-get install -y kamailio kamailio-extra-modules && \
     rm -rf /var/lib/apt/lists/*
 
-CMD ["kamailio", "-DD", "-E", "-f", "/etc/kamailio/kamailio.cfg"]
+CMD ["kamailio", "-DD", "-E", "-d", "4", "-f", "/etc/kamailio/kamailio.cfg"]
