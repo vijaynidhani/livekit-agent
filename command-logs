@@ -1,0 +1,3 @@
+vijaydhiman@maggi ~ % cat <<'EOF' | lk sip inbound create - { "trunk": { "name": "kamailio-local", "numbers": ["200"], "allowedAddresses": [ "127.0.0.1/32" ] } } EOF Using url, api-key, api-secret from environment SIPTrunkID: ST_8sGsFCgv9Snb
+cat <<'EOF' | lk sip dispatch create - { "dispatchRule": { "rule": { "dispatchRuleIndividual": { "roomPrefix": "call-" } }, "trunkIds": [ "ST_8sGsFCgv9Snb" ], "name": "kamailio-dispatch" } } EOF
+

@@ -91,6 +91,7 @@ docker run -d \
   --name livekit-sip \
   --restart unless-stopped \
   --network host \
+  -e LIVEKIT_SIP_EXTERNAL_ADDRESS=192.168.100.35 \
   -e SIP_CONFIG_BODY="$(cat <<'EOF'
 api_key: 'devkey'
 api_secret: 'secret'
@@ -108,10 +109,6 @@ EOF
 
   ================================================
 
-  docker run -d \
-  --name kamailio \
-  --restart unless-stopped \
-   --network host \
-  -v $(pwd)/kamilio/kamilio.cfg:/etc/kamailio/kamailio.cfg:ro \
-  kamailio:latest
+
+
  
