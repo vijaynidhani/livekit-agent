@@ -7,8 +7,17 @@ docker run -d \
   -p 7881:7881 \
   -p 7882:7882/udp \
   --add-host=host.docker.internal:host-gateway \
-  -e LIVEKIT_KEYS="devkey: secret" \
   -e LIVEKIT_REDIS_ADDRESS="host.docker.internal:6379" \
+  -e LIVEKIT_KEYS="devkey: secret" \
+  livekit/livekit-server \
+  livekit-server --dev
+
+  docker run -d \
+  --name livekit-server \
+  --restart unless-stopped \
+  --network host \
+  -e LIVEKIT_REDIS_ADDRESS="localhost:6379" \
+  -e LIVEKIT_KEYS="devkey: secret" \
   livekit/livekit-server \
   livekit-server --dev
 
@@ -30,23 +39,16 @@ should return 192.168.65.x
 docker run -d \
   --cap-add SYS_ADMIN \
   --name egress-server \
-  --add-host=host.docker.internal:host-gateway \
+  --restart always \
+  --network host \
   -e EGRESS_CONFIG_FILE=/out/egress_config.yaml \
   -v "$(pwd)/egress:/out" \
   -v "$(pwd)/egress:/tmp" \
-
-
   livekit/egress
+
+
 =========================================
-// Run redis server
-docker run -d \
-  --name redis-server \
-  -p 6379:6379 \
-  -v "$(pwd)/redis:/data" \
-  -v "$(pwd)/redis.conf:/usr/local/etc/redis/redis.conf:ro" \
-  --restart always \
-  redis:latest \
-  redis-server /usr/local/etc/redis/redis.conf 
+// Run redis servercd 
 
 Start the UI
 agent-starter-react % pnpm dev 
@@ -96,7 +98,7 @@ ws_url: 'ws://localhost:7880'
 redis:
   address: 'localhost:6379'
 sip_port: 5060
-rtp_port: 10000-20000
+rtp_port: 10000-10100
 use_external_ip: true
 logging:
   level: debug
@@ -110,8 +112,6 @@ EOF
   --name kamailio \
   --restart unless-stopped \
    --network host \
-  -p 5062:5060/udp \
-  -p 5062:5060/tcp \
   -v $(pwd)/kamilio/kamilio.cfg:/etc/kamailio/kamailio.cfg:ro \
-  kamailio
+  kamailio:latest
  

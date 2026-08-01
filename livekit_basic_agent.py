@@ -181,9 +181,9 @@ async def entrypoint(ctx: agents.JobContext):
     session = AgentSession(
         stt=deepgram.STT(model="nova-2"),
         llm=openai.LLM(
-            model="nvidia/nemotron-3-ultra-550b-a55b",
-            base_url="https://integrate.api.nvidia.com/v1",
-            api_key="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"
+            model="qwen3.6-35b-a3b-mtp", #"nvidia/nemotron-3-ultra-550b-a55b",
+            base_url="http://192.168.100.35:1234/v1", #"https://integrate.api.nvidia.com/v1",
+            api_key="sk-lm-bbtVR3VI:uLiR6U1zBke9durzhnKX"  #"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"
         ),
         tts=deepgram.TTS(model="aura-2-thalia-en"),
         vad=silero.VAD.load(),
