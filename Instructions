@@ -6,7 +6,7 @@ docker run -d \
   --network host \
   --add-host=host.docker.internal:host-gateway \
   -e LIVEKIT_KEYS="devkey: secret" \
-  -e LIVEKIT_REDIS_ADDRESS="host.docker.internal:6379" \
+  -e LIVEKIT_REDIS_ADDRESS="localhost:6379" \
   livekit/livekit-server \
   livekit-server --dev
 
