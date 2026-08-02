@@ -1,6 +1,10 @@
 
 uv run python livekit_basic_agent.py dev
 
+Trace with TCP dump
+sudo tcpdump -i any -nn -A udp port 5062
+
+
 docker run -d \
   --name livekit-server \
   --network host \
