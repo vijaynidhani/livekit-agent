@@ -1,0 +1,6 @@
+name: kamailio-dispatch
+trunk_ids:
+  - ST_im8RnrND6Dpw
+rule:
+  dispatch_rule_individual:
+    room_prefix: sip-

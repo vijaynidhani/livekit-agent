@@ -1,0 +1,13 @@
+{
+  "dispatch_rule": {
+    "name": "kamailio-dispatch",
+    "trunkIds": [
+      "ST_im8RnrND6Dpw"
+    ],
+    "rule": {
+      "dispatchRuleIndividual": {
+        "roomPrefix": "sip-"
+      }
+    }
+  }
+}
