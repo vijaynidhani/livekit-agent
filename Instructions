@@ -109,8 +109,6 @@ EOF
   --name kamailio \
   --restart unless-stopped \
    --network host \
-  -p 5062:5060/udp \
-  -p 5062:5060/tcp \
-  -v $(pwd)/kamilio/kamilio.cfg:/etc/kamailio/kamailio.cfg:ro \
+  -v $(pwd)/kamailio/kamailio.cfg:/etc/kamailio/kamailio.cfg:ro \
   kamailio
  
